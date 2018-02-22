@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import { Font, AppLoading } from 'expo';
-import Container from './src/components/Container';
+import NavigationContainer from './src/components/NavigationContainer';
+import { SafeAreaView } from 'react-navigation';
 
-import { COLOR, ThemeProvider } from 'react-native-material-ui';
-import SafeAreaView from 'react-native-safe-area-view';
-
-const uiTheme = {
-    palette: {
-        primaryColor: COLOR.blue500,
-    },
-    toolbar: {
-        container: {
-            height: 50,
-        },
-    },
-};
+import { ThemeProvider } from 'react-native-material-ui';
+import uiTheme from './src/theme/uiTheme';
 
 export default class App extends Component {
   constructor() {
@@ -45,16 +36,16 @@ export default class App extends Component {
       <AppLoading /> :
       <ThemeProvider uiTheme={uiTheme}>
         <SafeAreaView style={styles.safeAreaView} forceInset={{ top: 'always', bottom: 'never' }}>
-          <Container />
+          <NavigationContainer />
         </SafeAreaView>
       </ThemeProvider>
     );
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: uiTheme.palette.primaryColor,
-    flex: 1
+    // backgroundColor: uiTheme.palette.primaryColor,
+    flex: 1,
   }
-}
+});

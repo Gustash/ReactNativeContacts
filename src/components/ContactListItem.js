@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
 import { ListItem } from 'react-native-material-ui';
 
@@ -10,21 +10,20 @@ export default class ContactListItem extends Component {
 
         return(
             <ListItem
-                divider
                 leftElement={<Image source={{ uri: picture }} style={styles.avatar} />}
                 centerElement={{
                     primaryText: `${last}, ${first}`
                 }}
-                onPress={() => {}}
+                onPress={() => this.props.navigation.navigate('Details')}
             />
         );
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     avatar: {
         width: 45,
         height: 45,
         borderRadius: 45 / 2
     }
-}
+});

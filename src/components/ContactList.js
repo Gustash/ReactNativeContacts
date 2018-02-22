@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { List, FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
+
+import { ActionButton } from 'react-native-material-ui';
 
 import ContactListItem from './ContactListItem';
 import axios from 'axios';
@@ -28,11 +30,20 @@ export default class ContactList extends Component {
 
     render() {
         return(
-            <FlatList
-                data={this.state.contacts}
-                renderItem={({ item }) => <ContactListItem name={item.name} picture={item.picture.thumbnail}/>}
-                keyExtractor={(item, index) => index}
-            />
+            <View>
+                <FlatList
+                    data={this.state.contacts}
+                    renderItem={({ item }) => (
+                        <ContactListItem 
+                            name={item.name} 
+                            picture={item.picture.thumbnail}
+                            navigation={this.props.navigation}
+                        />
+                    )}
+                    keyExtractor={(item, index) => index}
+                />
+                <ActionButton />
+            </View>
         );
     }
 }
