@@ -6,6 +6,7 @@ import { ListItem } from 'react-native-material-ui';
 export default class ContactListItem extends Component {
     render() {
         const { first, last } = this.props.name;
+        const { id } = this.props;
         //const { picture } = this.props;
 
         return(
@@ -14,7 +15,10 @@ export default class ContactListItem extends Component {
                 centerElement={{
                     primaryText: `${last}, ${first}`
                 }}
-                onPress={() => this.props.navigation.navigate('Details')}
+                onPress={() => this.props.navigation.navigate(
+                    'Details', 
+                    { id }
+                )}
             />
         );
     }

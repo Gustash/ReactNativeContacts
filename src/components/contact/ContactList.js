@@ -10,9 +10,7 @@ import { connect } from 'react-redux';
 import { fetchContacts } from '../../../actions';
 
 class ContactList extends Component {
-    constructor(props) {
-        super(props);
-        
+    componentWillMount() {
         this.props.getContacts();
     }
 
@@ -27,6 +25,7 @@ class ContactList extends Component {
                     data={contacts}
                     renderItem={({ item }) => {
                         return <ContactListItem 
+                            id={item.id}
                             name={item.name} 
                             //picture={item.picture.thumbnail}
                             navigation={this.props.navigation}
