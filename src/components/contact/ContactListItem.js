@@ -6,11 +6,11 @@ import { ListItem } from 'react-native-material-ui';
 export default class ContactListItem extends Component {
     render() {
         const { first, last } = this.props.name;
-        const { picture } = this.props;
+        //const { picture } = this.props;
 
         return(
             <ListItem
-                leftElement={<Image source={{ uri: picture }} style={styles.avatar} />}
+                //leftElement={<Image source={{ uri: picture }} style={styles.avatar} />}
                 centerElement={{
                     primaryText: `${last}, ${first}`
                 }}

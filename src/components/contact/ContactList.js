@@ -1,0 +1,65 @@
+import React, { Component } from 'react';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
+
+import { ActionButton } from 'react-native-material-ui';
+
+import ContactListItem from './ContactListItem';
+
+import { connect } from 'react-redux';
+
+import { fetchContacts } from '../../../actions';
+
+class ContactList extends Component {
+    constructor(props) {
+        super(props);
+        
+        this.props.getContacts();
+    }
+
+    render() {
+        const { contacts } = this.props.contacts;
+
+        //console.log(this.props.contacts.errors);
+
+        return(
+            <View style={styles.container}>
+                <FlatList
+                    data={contacts}
+                    renderItem={({ item }) => {
+                        return <ContactListItem 
+                            name={item.name} 
+                            //picture={item.picture.thumbnail}
+                            navigation={this.props.navigation}
+                        />;
+                    }}
+                    keyExtractor={(item, index) => index}
+                />
+                <ActionButton />
+                {/* {this.props.contacts.errors.map(
+                    (err, i) => <Text key={i}>{err}</Text>
+                )} */}
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+});
+
+function mapStateToProps(state) {
+    const { contacts } = state;
+    return {
+        contacts
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getContacts: () => dispatch(fetchContacts())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
