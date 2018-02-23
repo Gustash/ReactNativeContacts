@@ -33,7 +33,7 @@ class ContactList extends Component {
                     }}
                     keyExtractor={(item, index) => index}
                 />
-                <ActionButton />
+                <ActionButton onPress={() => this.props.navigation.navigate('Create')} />
                 {/* {this.props.contacts.errors.map(
                     (err, i) => <Text key={i}>{err}</Text>
                 )} */}
@@ -44,7 +44,7 @@ class ContactList extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     }
 });
 

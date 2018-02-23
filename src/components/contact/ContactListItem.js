@@ -11,13 +11,17 @@ export default class ContactListItem extends Component {
 
         return(
             <ListItem
+                divider
                 //leftElement={<Image source={{ uri: picture }} style={styles.avatar} />}
                 centerElement={{
                     primaryText: `${last}, ${first}`
                 }}
                 onPress={() => this.props.navigation.navigate(
                     'Details', 
-                    { id }
+                    { 
+                        id,
+                        firstName: first
+                    }
                 )}
             />
         );

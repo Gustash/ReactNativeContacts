@@ -52,7 +52,6 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    // backgroundColor: uiTheme.palette.primaryColor,
     flex: 1,
   }
 });

@@ -11,6 +11,14 @@ export default class Navbar extends Component {
         }
     }
 
+    // Get the title of the navbar since React Navigation
+    // doesn't make this easy
+    getTitle() {
+        const { getScreenDetails, scene } = this.props;
+        const details = getScreenDetails(scene);
+        return details.options.title;
+    }
+
     render() {
         const { isRootRoute } = this.props;
         const leftElementIcon = (isRootRoute) ? 'menu' : 'arrow-back';
@@ -19,7 +27,7 @@ export default class Navbar extends Component {
             <Toolbar
                 leftElement={leftElementIcon}
                 onLeftElementPress={() => this.onLeftElementPressed()}
-                centerElement='Contacts'
+                centerElement={this.getTitle()}
                 /* searchable={searchSettings} */
             />
         );
