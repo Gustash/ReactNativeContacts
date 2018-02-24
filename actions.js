@@ -1,27 +1,20 @@
-import { 
-    ADD_CONTACT, 
-    REMOVE_CONTACT, 
+import {
     FETCHING_CONTACTS, 
     FETCHING_CONTACTS_SUCCESS, 
-    FETCHING_CONTACTS_FAILURE
+    FETCHING_CONTACTS_FAILURE,
+    UPLOADING_CONTACT,
+    UPLOADING_CONTACT_SUCCESS,
+    UPLOADING_CONTACT_FAILURE,
 } from './constants';
 
 import axios from 'axios';
 
-// URI to the firebase database endpoint
-import { contactsEndpoint } from './firebaseConfig';
-
-// export function createContact(contact) {
-//     return (dispatch) => {
-//         dispatch(addContact(contact));
-//     };
-// }
-
-// export function deleteContact(id) {
-//     return (dispatch) => {
-//         dispatch(removeContact(id));
-//     };
-// }
+import { 
+    // URI to the firebase database endpoint json
+    contactsEndpoint,
+    // URI path to the firebase database endpoint
+    contactsPath
+} from './firebaseConfig';
 
 export function fetchContacts() {
     return async (dispatch) => {
@@ -48,18 +41,37 @@ export function fetchContacts() {
     };
 }
 
-function addContact(contact) {
-    return {
-        type: ADD_CONTACT,
-        payload: contact
-    };
-}
+export function updateContact(contact, goBack) {
+    return async (dispatch, getState) => {
+        dispatch(addContact());
 
-function removeContact(id) {
-    return {
-        type: REMOVE_CONTACT,
-        payload: id
-    };
+        const { id, ...contactDetails } = contact;
+        const contacts = getState().contacts.contacts;
+
+        const contactExists = contacts.find(
+            ({ id }) => contact.id === id
+        );
+
+        if (contactExists) {
+            console.log('I found a contact!');
+        } else {
+            try {
+                let createdContactId = await axios.post(contactsEndpoint, {
+                    ...contactDetails
+                });
+                createdContactId = createdContactId.data.name;
+                let createdContact = await axios.get(
+                    contactsPath + createdContactId + '.json'
+                );
+                createdContact = createdContact.data;
+                dispatch(addContactSuccess(createdContact));
+                
+                goBack();
+            } catch (err) {
+                dispatch(addContactFailure(err.toString()));
+            }
+        }
+    }
 }
 
 function getContacts() {
@@ -78,6 +90,26 @@ function getContactsSuccess(contacts) {
 function getContactsFailure(err) {
     return {
         type: FETCHING_CONTACTS_FAILURE,
+        payload: err
+    };
+}
+
+function addContact() {
+    return {
+        type: UPLOADING_CONTACT
+    };
+}
+
+function addContactSuccess(contact) {
+    return {
+        type: UPLOADING_CONTACT_SUCCESS,
+        payload: contact
+    };
+}
+
+function addContactFailure(err) {
+    return {
+        type: UPLOADING_CONTACT_FAILURE,
         payload: err
     };
 }

@@ -4,7 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import ContactList from '../contact/ContactList';
 import Navbar from '../Navbar';
 import ContactDetails from '../contact/ContactDetails';
-import CreateContact from '../contact/CreateContact';
+import EditContact from '../contact/EditContact';
 
 export default StackNavigator({
     Home: {
@@ -20,9 +20,9 @@ export default StackNavigator({
         })
     },
     Create: {
-        screen: CreateContact,
+        screen: EditContact,
         navigationOptions: () => ({
-            title: 'Create Contact',
+            title: 'Edit Contact',
         })
     }
 },

@@ -10,14 +10,14 @@ import { connect } from 'react-redux';
 import { fetchContacts } from '../../../actions';
 
 class ContactList extends Component {
-    componentWillMount() {
+    componentDidMount() {
         this.props.getContacts();
     }
 
     render() {
         const { contacts } = this.props.contacts;
 
-        //console.log(this.props.contacts.errors);
+        //console.log(contacts);
 
         return(
             <View style={styles.container}>

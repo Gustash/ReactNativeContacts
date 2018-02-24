@@ -1,14 +1,16 @@
 import { 
-    ADD_CONTACT, 
-    REMOVE_CONTACT, 
     FETCHING_CONTACTS, 
     FETCHING_CONTACTS_SUCCESS, 
-    FETCHING_CONTACTS_FAILURE
+    FETCHING_CONTACTS_FAILURE,
+    UPLOADING_CONTACT,
+    UPLOADING_CONTACT_SUCCESS,
+    UPLOADING_CONTACT_FAILURE,
 } from '../../constants';
 
 const initialState = {
     contacts: [],
     isFetching: false,
+    isUploading: false,
     errors: []
 };
 
@@ -31,6 +33,29 @@ export default function contactsReducer(state = initialState, action) {
         return {
             ...state,
             isFetching: false,
+            errors: [
+                ...state.errors,
+                action.payload
+            ]
+        };
+    case UPLOADING_CONTACT:
+        return {
+            ...state,
+            isUploading: true,
+        };
+    case UPLOADING_CONTACT_SUCCESS:
+        return {
+            ...state,
+            isUploading: false,
+            contacts: [
+                ...state.contacts,
+                action.payload
+            ]
+        };
+    case UPLOADING_CONTACT_FAILURE:
+        return {
+            ...state,
+            isUploading: false,
             errors: [
                 ...state.errors,
                 action.payload
