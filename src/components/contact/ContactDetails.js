@@ -11,6 +11,8 @@ class ContactDetails extends Component {
         const { state } = this.props.navigation;
         const contactId = state.params ? state.params.id : undefined;
 
+        console.log(contactId);
+
         if (!contactId)
             this.props.navigation.goBack();
 
