@@ -33,7 +33,7 @@ class ContactList extends Component {
                     }}
                     keyExtractor={(item, index) => index}
                 />
-                <ActionButton onPress={() => this.props.navigation.navigate('Create')} />
+                <ActionButton onPress={() => this.props.navigation.navigate('Edit')} />
                 {/* {this.props.contacts.errors.map(
                     (err, i) => <Text key={i}>{err}</Text>
                 )} */}

@@ -5,13 +5,14 @@ export default class FormTextInput extends Component {
     
     static defaultProps = {
         required: false,
+        text: ''
     }
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isValid: !props.required,
+            isValid: (!props.required || this.isValidInput(props.text)),
         };
     }
 
@@ -37,7 +38,9 @@ export default class FormTextInput extends Component {
     }
 
     render() {
-        const { label, onChangeText } = this.props;
+        const { text, label, onChangeText } = this.props;
+
+        console.log(text);
 
         return(
             <View style={styles.inputContainer}>
@@ -47,8 +50,9 @@ export default class FormTextInput extends Component {
                     underlineColorAndroid='transparent'
                     onChangeText={(text) => {
                         this.checkInputValidity(text);
-                        (this.isValidInput(text) && onChangeText(text)); 
+                        onChangeText(text); 
                     }}
+                    value={text}
                 />
                 {!this.state.isValid && <Text style={styles.required}>This field is required.</Text>}
             </View>

@@ -12,14 +12,38 @@ class EditContact extends Component {
     constructor(props) {
         super(props);
 
+        const { params } = props.navigation.state;
+        const { id, name, phone, email } = this.prefillData(params);
+
         this.state = {
             contact: {
-                id: -1,
-                name: {},
-                phone: null,
-                email: null
+                id: (id || -1),
+                name: (name || {
+                    first: '',
+                    last: ''
+                }),
+                phone: (phone || ''),
+                email: (email || '')
             },
         };
+    }
+
+    prefillData(params) {
+        if (params) {
+            return {
+                ...params
+            };
+        } else {
+            return {
+                id: -1,
+                name: {
+                    first: '',
+                    last: ''
+                },
+                phone: '',
+                email: '',
+            };
+        }
     }
 
     _onChangeFirstName(first) {
@@ -64,9 +88,19 @@ class EditContact extends Component {
         });
     }
 
+    isFormValid() {
+        const { name, phone } = this.state.contact;
+        const { first, last } = name;
+
+        return (first !== '' && last !== '' && phone !== '');
+    }
+
     render() {
         const { saveContact } = this.props;
         const { goBack } = this.props.navigation;
+
+        const { name, phone, email } = this.state.contact;
+        const { first, last } = name;
 
         return(
             <View style={styles.container}>
@@ -75,29 +109,34 @@ class EditContact extends Component {
                         label='First Name'
                         required
                         onChangeText={(text) => this._onChangeFirstName(text)}
+                        text={first}
                     />
                     <Divider />
                     <FormTextInput 
                         label='Last Name'
                         required
                         onChangeText={(text) => this._onChangeLastName(text)}
+                        text={last}
                     />
                     <Divider />
                     <FormTextInput 
                         label='Phone Number'
                         required
                         onChangeText={(text) => this._onChangePhone(text)}
+                        text={phone}
                     />
                     <Divider />
                     <FormTextInput 
                         label='Email'
                         onChangeText={(text) => this._onChangeEmail(text)}
+                        text={email}
                     />
                     <Divider />
                 </ScrollView>
                 <Button 
                     raised 
                     primary 
+                    disabled={!this.isFormValid()}
                     text='Save'
                     onPress={() => saveContact(this.state.contact, goBack)}
                 />

@@ -19,7 +19,7 @@ export default StackNavigator({
             title: navigation.state.params.firstName + '\'s Details'
         })
     },
-    Create: {
+    Edit: {
         screen: EditContact,
         navigationOptions: () => ({
             title: 'Edit Contact',
