@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import PropTypes from 'prop-types';
+import { View, StyleSheet, ScrollView } from 'react-native';
 
 import { Divider, Button } from 'react-native-material-ui';
 
@@ -53,11 +54,19 @@ class EditContact extends Component {
     }
 
     _onChangeEmail(email) {
-        this.setState({
-            contact: {
-                ...this.state.contact,
+        let { ...changedContact } = this.state.contact;
+
+        if (email === '') {
+            delete changedContact.email;
+        } else {
+            changedContact = {
+                ...changedContact,
                 email
-            }
+            };
+        }
+
+        this.setState({
+            contact: changedContact,
         });
     }
 
@@ -118,6 +127,22 @@ class EditContact extends Component {
     }
 }
 
+EditContact.propTypes = {
+    contact: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.shape({
+            first: PropTypes.string.isRequired,
+            last: PropTypes.string.isRequired,
+        }).isRequired,
+        phone: PropTypes.string.isRequired,
+        email: PropTypes.string,
+    }).isRequired,
+    navigation: PropTypes.shape({
+        goBack: PropTypes.func.isRequired,
+    }).isRequired,
+    saveContact: PropTypes.func.isRequired,
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1
@@ -142,13 +167,12 @@ function mapStateToProps(state, props) {
     }
 
     const contact = {
-        id: -1,
+        id: '-1',
         name: {
             first: '',
             last: ''
         },
         phone: '',
-        email: '',
     };
     return {
         contact

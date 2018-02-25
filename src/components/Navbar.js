@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { NavigationScene } from 'react-navigation';
 
 import { Toolbar } from 'react-native-material-ui';
 
-export default class Navbar extends Component {
+class Navbar extends Component {
     onLeftElementPressed() {
         const { isRootRoute, navigateBack } = this.props;
 
@@ -34,7 +36,16 @@ export default class Navbar extends Component {
     }
 }
 
-const searchSettings = {
-    autoFocus: true,
-    placeholder: 'Search',
-}
+Navbar.propTypes = {
+    isRootRoute: PropTypes.bool.isRequired,
+    navigateBack: PropTypes.func.isRequired,
+    getScreenDetails: PropTypes.func.isRequired,
+    scene: PropTypes.instanceOf(NavigationScene).isRequired,
+};
+
+// const searchSettings = {
+//     autoFocus: true,
+//     placeholder: 'Search',
+// };
+
+export default Navbar;

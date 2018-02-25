@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default class ContactDetailsItem extends Component {
+class ContactDetailsItem extends Component {
     render() {
         const { label, text } = this.props;
 
@@ -13,6 +14,11 @@ export default class ContactDetailsItem extends Component {
         );
     }
 }
+
+ContactDetailsItem.propTypes = {
+    label: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -26,3 +32,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
     }
 });
+
+export default ContactDetailsItem;

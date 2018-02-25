@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Image, StyleSheet } from 'react-native';
 
 import { ListItem } from 'react-native-material-ui';
 
-export default class ContactListItem extends Component {
+class ContactListItem extends Component {
     render() {
         const { id, name } = this.props;
         const { first, last } = name;
@@ -20,7 +21,6 @@ export default class ContactListItem extends Component {
                     'Details', 
                     { 
                         id,
-                        firstName: first
                     }
                 )}
             />
@@ -28,10 +28,23 @@ export default class ContactListItem extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    avatar: {
-        width: 45,
-        height: 45,
-        borderRadius: 45 / 2
-    }
-});
+ContactListItem.propTypes = {
+    id: PropTypes.string.isRequired,
+    name: PropTypes.shape({
+        first: PropTypes.string.isRequired,
+        last: PropTypes.string.isRequired,
+    }).isRequired,
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }).isRequired,
+};
+
+// const styles = StyleSheet.create({
+//     avatar: {
+//         width: 45,
+//         height: 45,
+//         borderRadius: 45 / 2
+//     }
+// });
+
+export default ContactListItem;

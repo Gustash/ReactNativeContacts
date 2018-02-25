@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Divider, ActionButton } from 'react-native-material-ui';
 
@@ -44,11 +45,11 @@ class ContactDetails extends Component {
                             text={phone}
                         />
                         <Divider />
-                        <ContactDetailsItem 
+                        {email && <ContactDetailsItem 
                             label='Email'
                             text={email}
-                        />
-                        <Divider />
+                        />}
+                        {email && <Divider />}
                     </ScrollView>
                     <ActionButton 
                         icon='more-vert' 
@@ -73,6 +74,28 @@ class ContactDetails extends Component {
             return <Text>There was an error getting the details of this contact...</Text>;
         }
     }
+}
+
+ContactDetails.propTypes = {
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        state: PropTypes.shape({
+            params: PropTypes.shape({
+                id: PropTypes.string,
+            }),
+        }).isRequired,
+    }).isRequired,
+    contactDetails: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.shape({
+            first: PropTypes.string.isRequired,
+            last: PropTypes.string.isRequired,
+        }).isRequired,
+        // Phone is a string as enforcing types isn't
+        // in the scope of this example application
+        phone: PropTypes.string.isRequired,
+        email: PropTypes.string,
+    }).isRequired,
 }
 
 const styles = StyleSheet.create({

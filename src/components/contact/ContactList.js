@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
+import { FlatList, View, StyleSheet } from 'react-native';
 
 import { ActionButton } from 'react-native-material-ui';
 
@@ -39,6 +40,24 @@ class ContactList extends Component {
         );
     }
 }
+
+ContactList.propTypes = {
+    getContacts: PropTypes.func.isRequired,
+    contacts: PropTypes.shape({
+        contacts: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.shape({
+                first: PropTypes.string.isRequired,
+                last: PropTypes.string.isRequired,
+            }).isRequired,
+            phone: PropTypes.string.isRequired,
+            email: PropTypes.string,
+        })).isRequired,
+    }).isRequired,
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }).isRequired,
+};
 
 const styles = StyleSheet.create({
     container: {

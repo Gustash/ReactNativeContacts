@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-export default class FormTextInput extends Component {
-    
-    static defaultProps = {
-        required: false,
-        text: ''
-    }
-
+class FormTextInput extends Component {
     constructor(props) {
         super(props);
 
@@ -58,6 +53,18 @@ export default class FormTextInput extends Component {
     }
 }
 
+FormTextInput.defaultProps = {
+    required: false,
+    text: ''
+};
+
+FormTextInput.propTypes = {
+    required: PropTypes.bool,
+    text: PropTypes.string,
+    label: PropTypes.string,
+    onChangeText: PropTypes.func.isRequired,
+};
+
 const styles = StyleSheet.create({
     input: {
         height: 40,
@@ -77,3 +84,5 @@ const styles = StyleSheet.create({
         color: 'red',
     }
 });
+
+export default FormTextInput;

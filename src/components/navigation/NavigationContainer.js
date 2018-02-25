@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
 import ContactList from '../contact/ContactList';
@@ -6,7 +6,7 @@ import Navbar from '../Navbar';
 import ContactDetails from '../contact/ContactDetails';
 import EditContact from '../contact/EditContact';
 
-export default StackNavigator({
+const NavigationContainer = StackNavigator({
     Home: {
         screen: ContactList,
         navigationOptions: () => ({
@@ -15,8 +15,8 @@ export default StackNavigator({
     },
     Details: {
         screen: ContactDetails,
-        navigationOptions: ({ navigation }) => ({
-            title: navigation.state.params.firstName + '\'s Details'
+        navigationOptions: () => ({
+            title: 'Contact Details',
         })
     },
     Edit: {
@@ -41,3 +41,5 @@ export default StackNavigator({
         };
     },
 });
+
+export default NavigationContainer;
