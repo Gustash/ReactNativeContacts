@@ -6,10 +6,12 @@ import { Toolbar } from 'react-native-material-ui';
 
 class Navbar extends Component {
     onLeftElementPressed() {
-        const { isRootRoute, navigateBack } = this.props;
+        const { isRootRoute, navigateBack, openDrawer } = this.props;
 
         if (!isRootRoute) {
             navigateBack();
+        } else {
+            openDrawer();
         }
     }
 
@@ -43,6 +45,7 @@ Navbar.propTypes = {
     scene: PropTypes.shape({
         type: PropTypes.instanceOf(NavigationScene),
     }).isRequired,
+    openDrawer: PropTypes.func.isRequired,
 };
 
 // const searchSettings = {

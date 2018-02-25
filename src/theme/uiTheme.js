@@ -13,5 +13,10 @@ export default {
         text: {
             color: 'white',
         }
+    },
+    drawerSectionActiveItem: {
+        leftElement: {
+            color: COLOR.blue500,
+        }
     }
 };
