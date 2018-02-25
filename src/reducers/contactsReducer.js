@@ -7,7 +7,7 @@ import {
     UPLOADING_NEW_CONTACT_FAILURE,
     UPLOADING_UPDATED_CONTACT_SUCCESS,
     UPLOADING_UPDATED_CONTACT_FAILURE,
-} from '../../constants';
+} from '../store/constants';
 
 const initialState = {
     contacts: [],
@@ -15,6 +15,20 @@ const initialState = {
     isUploading: false,
     errors: []
 };
+
+function compareNames(a, b) {
+    const lastNameOfA = a.name.last.toLowerCase();
+    const lastNameOfB = b.name.last.toLowerCase();
+
+    if (lastNameOfA < lastNameOfB) {
+        return -1;
+    }
+    if (lastNameOfA > lastNameOfB) {
+        return 1;
+    }
+
+    return 0;
+}
 
 export default function contactsReducer(state = initialState, action) {
     switch (action.type) {
@@ -28,7 +42,7 @@ export default function contactsReducer(state = initialState, action) {
     case FETCHING_CONTACTS_SUCCESS:
         return {
             ...state,
-            contacts: action.payload,
+            contacts: action.payload.sort(compareNames),
             isFetching: false
         };
     case FETCHING_CONTACTS_FAILURE:
@@ -52,7 +66,7 @@ export default function contactsReducer(state = initialState, action) {
             contacts: [
                 ...state.contacts,
                 action.payload
-            ]
+            ].sort(compareNames)
         };
     case UPLOADING_NEW_CONTACT_FAILURE:
         return {
@@ -70,7 +84,7 @@ export default function contactsReducer(state = initialState, action) {
         newContacts = [
             ...newContacts,
             action.payload
-        ];
+        ].sort(compareNames);
         
         return {
             ...state,

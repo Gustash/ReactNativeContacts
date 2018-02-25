@@ -16,7 +16,7 @@ import {
     contactsEndpoint,
     // URI path to the firebase database endpoint
     contactsPath
-} from './firebaseConfig';
+} from '../../firebaseConfig';
 
 // THUNKS
 
@@ -116,7 +116,6 @@ async function _updateContact(dispatch, contact, existingContact) {
     // Send PATCH request if anything was changed
     if (contactWasUpdated) {
         try {
-            console.log(changedFields);
             await axios.patch(contactsPath + id + '.json', changedFields);
             dispatch(updateContactSuccess(contact));
         } catch (err) {

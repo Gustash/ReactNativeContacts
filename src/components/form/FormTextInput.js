@@ -40,8 +40,6 @@ export default class FormTextInput extends Component {
     render() {
         const { text, label, onChangeText } = this.props;
 
-        console.log(text);
-
         return(
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>{label}</Text>

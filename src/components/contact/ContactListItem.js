@@ -5,8 +5,8 @@ import { ListItem } from 'react-native-material-ui';
 
 export default class ContactListItem extends Component {
     render() {
-        const { first, last } = this.props.name;
-        const { id } = this.props;
+        const { id, name } = this.props;
+        const { first, last } = name;
         //const { picture } = this.props;
 
         return(

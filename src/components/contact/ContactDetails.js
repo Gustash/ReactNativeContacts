@@ -7,44 +7,28 @@ import { connect } from 'react-redux';
 import ContactDetailsItem from './ContactDetailsItem';
 
 class ContactDetails extends Component {
-    componentWillMount() {
-        const { state } = this.props.navigation;
-        const contactId = state.params ? state.params.id : undefined;
-
-        console.log(contactId);
-
-        if (!contactId)
-            this.props.navigation.goBack();
-
-        this.contactDetails = this.getContactDetails(contactId);
-    }
-
-    getContactDetails(contactId) {
-        const { contacts } = this.props.contacts;
-        return contacts.find(
-            (contact) => contact.id === contactId
-        );
-    }
-
     resolveAction(actionName) {
-        const { navigate } = this.props.navigation;
+        const { navigate, state } = this.props.navigation;
+        const { id } = state.params;
 
         switch (actionName) {
         case 'edit':
             navigate('Edit', {
-                ...this.contactDetails
+                id,
             });
             break;
         case 'delete':
             console.log('Deleting contact with id ' + 
-            this.props.contacts.contacts.id);
+            id);
             break;
         }
     }
 
     render() {
-        if (this.contactDetails) {
-            const { name, phone, email } = this.contactDetails;
+        const { contactDetails } = this.props;
+
+        if (contactDetails) {
+            const { name, phone, email } = contactDetails;
             const { first, last } = name;
 
             return (
@@ -97,10 +81,21 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
-    const { contacts } = state;
+function mapStateToProps(state, props) {
+    const { contacts } = state.contacts;
+    const contactId = props.navigation.state.params ? 
+        props.navigation.state.params.id : 
+        undefined;
+
+    if (!contactId)
+        props.navigation.goBack();
+
+    const contact = contacts.find(
+        (contact) => contact.id === contactId
+    );
+
     return {
-        contacts
+        contactDetails: contact,
     };
 }
 

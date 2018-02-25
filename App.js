@@ -8,7 +8,7 @@ import { ThemeProvider } from 'react-native-material-ui';
 import uiTheme from './src/theme/uiTheme';
 
 import { Provider } from 'react-redux';
-import configureStore from './configureStore';
+import configureStore from './src/store/configureStore';
 
 const store = configureStore();
 

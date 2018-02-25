@@ -5,45 +5,18 @@ import { Divider, Button } from 'react-native-material-ui';
 
 import FormTextInput from '../form/FormTextInput';
 
-import { updateContact } from '../../../actions';
+import { updateContact } from '../../store/actions';
 import { connect } from 'react-redux';
 
 class EditContact extends Component {
     constructor(props) {
         super(props);
 
-        const { params } = props.navigation.state;
-        const { id, name, phone, email } = this.prefillData(params);
+        const { contact } = props;
 
         this.state = {
-            contact: {
-                id: (id || -1),
-                name: (name || {
-                    first: '',
-                    last: ''
-                }),
-                phone: (phone || ''),
-                email: (email || '')
-            },
+            contact
         };
-    }
-
-    prefillData(params) {
-        if (params) {
-            return {
-                ...params
-            };
-        } else {
-            return {
-                id: -1,
-                name: {
-                    first: '',
-                    last: ''
-                },
-                phone: '',
-                email: '',
-            };
-        }
     }
 
     _onChangeFirstName(first) {
@@ -154,10 +127,38 @@ const styles = StyleSheet.create({
     },
 });
 
+function mapStateToProps(state, props) {
+    const { params } = props.navigation.state;
+
+    if (params) {
+        const { contacts } = state.contacts; 
+        const contact = contacts.find(
+            (contact) => contact.id === params.id
+        );
+
+        return {
+            contact
+        };
+    }
+
+    const contact = {
+        id: -1,
+        name: {
+            first: '',
+            last: ''
+        },
+        phone: '',
+        email: '',
+    };
+    return {
+        contact
+    };
+}
+
 function mapDispatchToProps(dispatch) {
     return {
         saveContact: (contact, goBack) => dispatch(updateContact(contact, goBack))
     };
 }
 
-export default connect(null, mapDispatchToProps)(EditContact);
+export default connect(mapStateToProps, mapDispatchToProps)(EditContact);

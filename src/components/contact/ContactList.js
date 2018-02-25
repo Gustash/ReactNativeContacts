@@ -7,7 +7,7 @@ import ContactListItem from './ContactListItem';
 
 import { connect } from 'react-redux';
 
-import { fetchContacts } from '../../../actions';
+import { fetchContacts } from '../../store/actions';
 
 class ContactList extends Component {
     componentDidMount() {
@@ -16,8 +16,6 @@ class ContactList extends Component {
 
     render() {
         const { contacts } = this.props.contacts;
-
-        //console.log(contacts);
 
         return(
             <View style={styles.container}>
