@@ -5,6 +5,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { Divider, Button } from 'react-native-material-ui';
 
 import FormTextInput from '../form/FormTextInput';
+import ContactAvatarLarge from './ContactAvatarLarge';
 
 import { updateContact } from '../../store/actions';
 import { connect } from 'react-redux';
@@ -70,6 +71,17 @@ class EditContact extends Component {
         });
     }
 
+    _onChangeAvatar(avatarUri) {
+        this.setState({
+            contact: {
+                ...this.state.contact,
+                avatarUri
+            }
+        });
+
+        console.log(this.state.contact);
+    }
+
     isFormValid() {
         const { name, phone } = this.state.contact;
         const { first, last } = name;
@@ -81,12 +93,17 @@ class EditContact extends Component {
         const { saveContact, isUploading } = this.props;
         const { goBack } = this.props.navigation;
 
-        const { name, phone, email } = this.state.contact;
+        const { name, phone, email, avatarUri } = this.state.contact;
         const { first, last } = name;
 
         return(
             <View style={styles.container}>
                 <ScrollView style={styles.scrollView}>
+                    <ContactAvatarLarge 
+                        onChangeAvatar={(uri) => this._onChangeAvatar(uri)} 
+                        pictureUri={avatarUri}
+                    />
+                    <Divider />
                     <FormTextInput
                         label='First Name'
                         required
@@ -136,6 +153,7 @@ EditContact.propTypes = {
         }).isRequired,
         phone: PropTypes.string.isRequired,
         email: PropTypes.string,
+        avatarUri: PropTypes.string,
     }).isRequired,
     navigation: PropTypes.shape({
         goBack: PropTypes.func.isRequired,

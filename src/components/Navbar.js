@@ -40,7 +40,9 @@ Navbar.propTypes = {
     isRootRoute: PropTypes.bool.isRequired,
     navigateBack: PropTypes.func.isRequired,
     getScreenDetails: PropTypes.func.isRequired,
-    scene: PropTypes.instanceOf(NavigationScene).isRequired,
+    scene: PropTypes.shape({
+        type: PropTypes.instanceOf(NavigationScene),
+    }).isRequired,
 };
 
 // const searchSettings = {

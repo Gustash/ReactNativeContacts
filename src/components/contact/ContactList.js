@@ -31,7 +31,7 @@ class ContactList extends Component {
                         return <ContactListItem 
                             id={item.id}
                             name={item.name} 
-                            //picture={item.picture.thumbnail}
+                            avatarUri={item.avatarUri}
                             navigation={this.props.navigation}
                         />;
                     }}
@@ -56,6 +56,7 @@ ContactList.propTypes = {
         }).isRequired,
         phone: PropTypes.string.isRequired,
         email: PropTypes.string,
+        avatarUri: PropTypes.string,
     })).isRequired,
     isFetching: PropTypes.bool.isRequired,
     navigation: PropTypes.shape({

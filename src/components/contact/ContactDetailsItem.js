@@ -23,10 +23,8 @@ ContactDetailsItem.propTypes = {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        paddingLeft: 16,
-        paddingRight: 16,
-        paddingTop: 8,
-        paddingBottom: 8
+        paddingHorizontal: 16,
+        paddingVertical: 8,
     },
     label: {
         fontSize: 16,

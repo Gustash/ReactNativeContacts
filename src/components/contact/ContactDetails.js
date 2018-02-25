@@ -15,6 +15,7 @@ import ContactDetailsItem from './ContactDetailsItem';
 import { deleteContact } from '../../store/actions';
 
 import LoadingIndicator from '../LoadingIndicator';
+import ContactAvatarLarge from './ContactAvatarLarge';
 
 class ContactDetails extends Component {
     resolveAction(actionName) {
@@ -54,12 +55,13 @@ class ContactDetails extends Component {
             return <LoadingIndicator />;
 
         if (contactDetails) {
-            const { name, phone, email } = contactDetails;
+            const { name, phone, email, avatarUri } = contactDetails;
             const { first, last } = name;
 
             return (
                 <View style={styles.container}>
                     <ScrollView>
+                        <ContactAvatarLarge pictureUri={avatarUri} />
                         <ContactDetailsItem 
                             label='Name'
                             text={`${first} ${last}`}
@@ -126,6 +128,7 @@ ContactDetails.propTypes = {
         // in the scope of this example application
         phone: PropTypes.string.isRequired,
         email: PropTypes.string,
+        avatarUri: PropTypes.string,
     }),
     deleteContact: PropTypes.func.isRequired,
     isDeleting: PropTypes.bool.isRequired,
