@@ -7,6 +7,8 @@ import {
     UPLOADING_NEW_CONTACT_FAILURE,
     UPLOADING_UPDATED_CONTACT_SUCCESS,
     UPLOADING_UPDATED_CONTACT_FAILURE,
+    DELETING_CONTACT_SUCCESS,
+    DELETING_CONTACT_FAILURE
 } from './constants';
 
 import axios from 'axios';
@@ -63,6 +65,21 @@ export function updateContact(contact, goBack) {
         }
 
         goBack();
+    }
+}
+
+export function deleteContact(id, goBack) {
+    return async (dispatch) => {
+        dispatch(changeContact());
+
+        try {
+            await axios.delete(contactsPath + id + '.json');
+            dispatch(removeContactSuccess(id));
+
+            goBack();
+        } catch (err) {
+            dispatch(removeContactFailure(err.toString()));
+        }
     }
 }
 
@@ -196,6 +213,20 @@ function updateContactSuccess(contact) {
 function updateContactFailure(err) {
     return {
         type: UPLOADING_UPDATED_CONTACT_FAILURE,
+        payload: err
+    }
+}
+
+function removeContactSuccess(id) {
+    return {
+        type: DELETING_CONTACT_SUCCESS,
+        payload: id
+    }
+}
+
+function removeContactFailure(err) {
+    return {
+        type: DELETING_CONTACT_FAILURE,
         payload: err
     }
 }

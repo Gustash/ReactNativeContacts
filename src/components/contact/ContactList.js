@@ -10,13 +10,18 @@ import { connect } from 'react-redux';
 
 import { fetchContacts } from '../../store/actions';
 
+import LoadingIndicator from '../LoadingIndicator';
+
 class ContactList extends Component {
     componentDidMount() {
         this.props.getContacts();
     }
 
     render() {
-        const { contacts } = this.props.contacts;
+        const { contacts, isFetching } = this.props;
+
+        if (isFetching)
+            return <LoadingIndicator />;
 
         return(
             <View style={styles.container}>
@@ -43,20 +48,23 @@ class ContactList extends Component {
 
 ContactList.propTypes = {
     getContacts: PropTypes.func.isRequired,
-    contacts: PropTypes.shape({
-        contacts: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            name: PropTypes.shape({
-                first: PropTypes.string.isRequired,
-                last: PropTypes.string.isRequired,
-            }).isRequired,
-            phone: PropTypes.string.isRequired,
-            email: PropTypes.string,
-        })).isRequired,
-    }).isRequired,
+    contacts: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.shape({
+            first: PropTypes.string.isRequired,
+            last: PropTypes.string.isRequired,
+        }).isRequired,
+        phone: PropTypes.string.isRequired,
+        email: PropTypes.string,
+    })).isRequired,
+    isFetching: PropTypes.bool.isRequired,
     navigation: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }).isRequired,
+};
+
+ContactList.contextTypes = {
+    uiTheme: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -66,9 +74,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const { contacts } = state;
+    const { contacts, isFetching } = state.contacts;
     return {
-        contacts
+        contacts,
+        isFetching,
     };
 }
 

@@ -78,7 +78,7 @@ class EditContact extends Component {
     }
 
     render() {
-        const { saveContact } = this.props;
+        const { saveContact, isUploading } = this.props;
         const { goBack } = this.props.navigation;
 
         const { name, phone, email } = this.state.contact;
@@ -118,8 +118,8 @@ class EditContact extends Component {
                 <Button 
                     raised 
                     primary 
-                    disabled={!this.isFormValid()}
-                    text='Save'
+                    disabled={!this.isFormValid() || isUploading}
+                    text={(!isUploading) ? 'Save' : 'Saving...'}
                     onPress={() => saveContact(this.state.contact, goBack)}
                 />
             </View>
@@ -141,6 +141,7 @@ EditContact.propTypes = {
         goBack: PropTypes.func.isRequired,
     }).isRequired,
     saveContact: PropTypes.func.isRequired,
+    isUploading: PropTypes.bool.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -154,28 +155,28 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state, props) {
     const { params } = props.navigation.state;
+    const { isUploading } = state.contacts;
+
+    let contact;
 
     if (params) {
         const { contacts } = state.contacts; 
-        const contact = contacts.find(
+        contact = contacts.find(
             (contact) => contact.id === params.id
         );
-
-        return {
-            contact
+    } else {
+        contact = {
+            id: '-1',
+            name: {
+                first: '',
+                last: ''
+            },
+            phone: '',
         };
     }
-
-    const contact = {
-        id: '-1',
-        name: {
-            first: '',
-            last: ''
-        },
-        phone: '',
-    };
     return {
-        contact
+        contact,
+        isUploading
     };
 }
 

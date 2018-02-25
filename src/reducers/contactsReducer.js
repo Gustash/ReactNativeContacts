@@ -7,6 +7,8 @@ import {
     UPLOADING_NEW_CONTACT_FAILURE,
     UPLOADING_UPDATED_CONTACT_SUCCESS,
     UPLOADING_UPDATED_CONTACT_FAILURE,
+    DELETING_CONTACT_SUCCESS,
+    DELETING_CONTACT_FAILURE,
 } from '../store/constants';
 
 const initialState = {
@@ -92,6 +94,35 @@ export default function contactsReducer(state = initialState, action) {
             contacts: newContacts
         };
     }
+    case UPLOADING_UPDATED_CONTACT_FAILURE:
+        return {
+            ...state,
+            isUploading: false,
+            errors: [
+                ...state.errors,
+                action.payload
+            ]
+        };
+    case DELETING_CONTACT_SUCCESS: {
+        const filteredContacts = state.contacts.filter(
+            (contact) => contact.id !== action.payload
+        );
+
+        return {
+            ...state,
+            isUploading: false,
+            contacts: filteredContacts
+        };
+    }
+    case DELETING_CONTACT_FAILURE:
+        return {
+            ...state,
+            isUploading: false,
+            errors: [
+                ...state.errors,
+                action.payload
+            ]
+        };
     default:
         return state;
 

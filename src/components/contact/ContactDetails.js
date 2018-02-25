@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { 
+    View, 
+    Text, 
+    ScrollView, 
+    Alert, 
+    StyleSheet } from 'react-native';
 import { Divider, ActionButton } from 'react-native-material-ui';
 
 import { connect } from 'react-redux';
 
 import ContactDetailsItem from './ContactDetailsItem';
 
+import { deleteContact } from '../../store/actions';
+
+import LoadingIndicator from '../LoadingIndicator';
+
 class ContactDetails extends Component {
     resolveAction(actionName) {
-        const { navigate, state } = this.props.navigation;
+        const { navigate, state, goBack } = this.props.navigation;
         const { id } = state.params;
 
         switch (actionName) {
@@ -19,14 +28,30 @@ class ContactDetails extends Component {
             });
             break;
         case 'delete':
-            console.log('Deleting contact with id ' + 
-            id);
+            Alert.alert(
+                'Delete Contact',
+                'Are you sure you want to delete?',
+                [
+                    { // Confirmation button
+                        text: 'OK', 
+                        onPress: () => this.props.deleteContact(id, goBack) 
+                    },
+                    { // Cancel button
+                        text: 'Cancel',
+                        onPress: () => console.log('Canceling'),
+                        style: 'cancel',
+                    }
+                ]
+            );
             break;
         }
     }
 
     render() {
-        const { contactDetails } = this.props;
+        const { contactDetails, isDeleting } = this.props;
+
+        if (isDeleting) 
+            return <LoadingIndicator />;
 
         if (contactDetails) {
             const { name, phone, email } = contactDetails;
@@ -84,7 +109,13 @@ ContactDetails.propTypes = {
                 id: PropTypes.string,
             }),
         }).isRequired,
+        goBack: PropTypes.func.isRequired,
     }).isRequired,
+    // Contact details is not required only because
+    // React Native doesn't like it when I dispatch the
+    // remove action and go back.
+    // Even if I go back before I dispatch, it still warns me
+    // that contactDetails is undefined
     contactDetails: PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.shape({
@@ -95,17 +126,29 @@ ContactDetails.propTypes = {
         // in the scope of this example application
         phone: PropTypes.string.isRequired,
         email: PropTypes.string,
-    }).isRequired,
-}
+    }),
+    deleteContact: PropTypes.func.isRequired,
+    isDeleting: PropTypes.bool.isRequired,
+};
+
+ContactDetails.contextTypes = {
+    uiTheme: PropTypes.object.isRequired,
+};
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    indicatorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });
 
 function mapStateToProps(state, props) {
-    const { contacts } = state.contacts;
+    const { contacts, isUploading } = state.contacts;
     const contactId = props.navigation.state.params ? 
         props.navigation.state.params.id : 
         undefined;
@@ -119,7 +162,14 @@ function mapStateToProps(state, props) {
 
     return {
         contactDetails: contact,
+        isDeleting: isUploading,
     };
 }
 
-export default connect(mapStateToProps)(ContactDetails);
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteContact: (id, goBack) => dispatch(deleteContact(id, goBack))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactDetails);
