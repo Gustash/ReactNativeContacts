@@ -11,7 +11,7 @@ import {
     DELETING_CONTACT_FAILURE,
 } from '../store/constants';
 
-const initialState = {
+export const initialState = {
     contacts: [],
     isFetching: false,
     isUploading: false,
