@@ -11,7 +11,7 @@ import {
     DELETING_CONTACT_FAILURE
 } from './constants';
 
-import axios from 'axios';
+//import axios from 'axios';
 
 import { 
     // URI to the firebase database endpoint json
@@ -27,8 +27,9 @@ export function fetchContacts() {
         dispatch(getContacts());
 
         try {
-            let contacts = await axios.get(contactsEndpoint);
-            contacts = contacts.data;
+            //let contacts = await axios.get(contactsEndpoint);
+            let contacts = await fetch(contactsEndpoint);
+            contacts = await contacts.json();
 
             // The Firebase REST API returns an object with objects
             // so we need to convert it to an array
@@ -69,11 +70,21 @@ export function updateContact(contact, goBack) {
 }
 
 export function deleteContact(id, goBack) {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         dispatch(changeContact());
 
+        const contacts = getState().contacts.contacts;
+
+        const contactExists = contacts.find((contact) => id === contact.id);
+
+        if (!contactExists) {
+            dispatch(removeContactFailure('The contact you tried to delete does not exist.'));
+            return;
+        }
+
         try {
-            await axios.delete(contactsPath + id + '.json');
+            await fetch(contactsPath + id + '.json', { method: 'DELETE' });
+            //await axios.delete(contactsPath + id + '.json');
             dispatch(removeContactSuccess(id));
 
             goBack();
@@ -84,6 +95,7 @@ export function deleteContact(id, goBack) {
 }
 
 // HELPERS
+
 async function _updateContact(dispatch, contact, existingContact) {
     const { id, name, phone, email } = contact;
     const { first, last } = name;
@@ -133,7 +145,14 @@ async function _updateContact(dispatch, contact, existingContact) {
     // Send PATCH request if anything was changed
     if (contactWasUpdated) {
         try {
-            await axios.patch(contactsPath + id + '.json', changedFields);
+            //await axios.patch(contactsPath + id + '.json', changedFields);
+            await fetch(contactsPath + id + '.json', {
+                method: 'PATCH',
+                body: JSON.stringify(changedFields),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            });
             dispatch(updateContactSuccess(contact));
         } catch (err) {
             dispatch(updateContactFailure(err.toString()));
@@ -143,14 +162,23 @@ async function _updateContact(dispatch, contact, existingContact) {
 
 async function _createContact(dispatch, contactDetails) {
     try {
-        let createdContactId = await axios.post(contactsEndpoint, {
-            ...contactDetails
+        // let createdContactId = await axios.post(contactsEndpoint, {
+        //     ...contactDetails
+        // });
+        let createdContactId = await fetch(contactsEndpoint, {
+            method: 'POST',
+            body: JSON.stringify({ ...contactDetails }),
+            headers: {
+                'content-type': 'application/json'
+            }
         });
-        createdContactId = createdContactId.data.name;
-        let createdContact = await axios.get(
-            contactsPath + createdContactId + '.json'
-        );
-        createdContact = createdContact.data;
+        createdContactId = await createdContactId.json();
+        createdContactId = createdContactId.name;
+        // let createdContact = await axios.get(
+        //     contactsPath + createdContactId + '.json'
+        // );
+        let createdContact = await fetch(contactsPath + createdContactId + '.json');
+        createdContact = await createdContact.json();
         createdContact = {
             ...createdContact,
             id: createdContactId
