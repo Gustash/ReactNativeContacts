@@ -41,12 +41,28 @@ export default function contactsReducer(state = initialState, action) {
             contacts: [],
             isFetching: true
         };
-    case FETCHING_CONTACTS_SUCCESS:
-        return {
+    case FETCHING_CONTACTS_SUCCESS: {
+        let newState = {
             ...state,
-            contacts: action.payload.sort(compareNames),
             isFetching: false
         };
+
+        if (action.payload instanceof Array) {
+            newState = {
+                ...newState,
+                contacts: [ ...action.payload ].sort(compareNames)
+            };
+        } else {
+            newState = {
+                ...newState,
+                contacts: [
+                    action.payload
+                ]
+            };
+        }
+
+        return newState;
+    }
     case FETCHING_CONTACTS_FAILURE:
         return {
             ...state,

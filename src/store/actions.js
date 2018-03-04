@@ -163,68 +163,68 @@ async function _createContact(dispatch, contactDetails) {
 
 // ACTIONS
 
-function getContacts() {
+export function getContacts() {
     return {
         type: FETCHING_CONTACTS
     };
 }
 
-function getContactsSuccess(contacts) {
+export function getContactsSuccess(contacts) {
     return {
         type: FETCHING_CONTACTS_SUCCESS,
         payload: contacts
     };
 }
 
-function getContactsFailure(err) {
+export function getContactsFailure(err) {
     return {
         type: FETCHING_CONTACTS_FAILURE,
         payload: err
     };
 }
 
-function changeContact() {
+export function changeContact() {
     return {
         type: UPLOADING_CONTACT
     };
 }
 
-function addContactSuccess(contact) {
+export function addContactSuccess(contact) {
     return {
         type: UPLOADING_NEW_CONTACT_SUCCESS,
         payload: contact
     };
 }
 
-function addContactFailure(err) {
+export function addContactFailure(err) {
     return {
         type: UPLOADING_NEW_CONTACT_FAILURE,
         payload: err
     };
 }
 
-function updateContactSuccess(contact) {
+export function updateContactSuccess(contact) {
     return {
         type: UPLOADING_UPDATED_CONTACT_SUCCESS,
         payload: contact
     }
 }
 
-function updateContactFailure(err) {
+export function updateContactFailure(err) {
     return {
         type: UPLOADING_UPDATED_CONTACT_FAILURE,
         payload: err
     }
 }
 
-function removeContactSuccess(id) {
+export function removeContactSuccess(id) {
     return {
         type: DELETING_CONTACT_SUCCESS,
         payload: id
     }
 }
 
-function removeContactFailure(err) {
+export function removeContactFailure(err) {
     return {
         type: DELETING_CONTACT_FAILURE,
         payload: err

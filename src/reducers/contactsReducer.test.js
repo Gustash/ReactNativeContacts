@@ -100,6 +100,45 @@ describe('Contacts Reducer', () => {
         expect(reducer(preloadedState, action)).toEqual(expectedState);
     });
 
+    it('should handle fetching of a single object', () => {
+        const preloadedState = {
+            ...initialState,
+            isFetching: true,
+            contacts: []
+        };
+
+        const expectedState = {
+            ...initialState,
+            isFetching: false,
+            contacts: [
+                {
+                    id: 1,
+                    name: {
+                        first: 'Jane',
+                        last: 'Mark'
+                    },
+                    phone: '987654321',
+                    email: 'jane.mark@test.com'
+                }
+            ]
+        };
+
+        const action = {
+            type: FETCHING_CONTACTS_SUCCESS,
+            payload: {
+                id: 1,
+                name: {
+                    first: 'Jane',
+                    last: 'Mark'
+                },
+                phone: '987654321',
+                email: 'jane.mark@test.com'
+            }
+        };
+
+        expect(reducer(preloadedState, action)).toEqual(expectedState);
+    });
+
     it('should fail to fetch contacts and log error', () => {
         const preloadedState = {
             ...initialState,
